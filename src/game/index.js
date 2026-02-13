@@ -44,7 +44,7 @@ export class Game extends EventTarget {
       this.#engine.world.bodies.add(character);
     }
 
-    this.#characters[0].addEventListener("collide", ({ detail: { body } }) => {
+    this.#characters[0].addEventListener("touch", ({ detail: { body } }) => {
       if (body === this.#characters[1]) {
         this.stop();
         level.complete();

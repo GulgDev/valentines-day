@@ -43,7 +43,7 @@ export class Body extends EventTarget {
   }
 
   collide(body) {
-    if (!body.collidable || !body.static) return;
+    if (!body.collidable) return;
 
     const x1 = Math.max(this.x - this.w / 2, body.x - body.w / 2),
       x2 = Math.min(this.x + this.w / 2, body.x + body.w / 2),
@@ -51,6 +51,11 @@ export class Body extends EventTarget {
       y2 = Math.min(this.y + this.h / 2, body.y + body.h / 2);
 
     if (x2 <= x1 || y2 <= y1) return;
+
+    if (!body.static) {
+      this.dispatchEvent(new CustomEvent("touch", { detail: { body } }));
+      return;
+    }
 
     let direction;
     if (x2 - x1 < y2 - y1) {
