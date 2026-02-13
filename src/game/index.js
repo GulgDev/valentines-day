@@ -7,13 +7,15 @@ export class Game extends EventTarget {
 
   #characters = [];
 
-  constructor(ctx, levelInfo) {
-    this.#engine = new Engine(ctx, this.#characters);
+  constructor(canvas, level) {
+    super();
+
+    this.#engine = new Engine(canvas.getContext("2d"), this.#characters);
 
     {
       const character = new Character(
-        levelInfo.spawnPoints[0].x,
-        levelInfo.spawnPoints[0].y,
+        level.spawnPoints[0].x,
+        level.spawnPoints[0].y,
         64,
         64,
       );
@@ -22,12 +24,13 @@ export class Game extends EventTarget {
       listener.addEventListener("release", () => character.release());
       this.#engine.addEventListener("stop", () => listener.dispose());
       this.#characters.push(character);
+      this.#engine.world.bodies.add(character);
     }
 
     {
       const character = new Character(
-        levelInfo.spawnPoints[1].x,
-        levelInfo.spawnPoints[1].x,
+        level.spawnPoints[1].x,
+        level.spawnPoints[1].y,
         64,
         64,
       );
@@ -36,13 +39,22 @@ export class Game extends EventTarget {
       listener.addEventListener("release", () => character.release());
       this.#engine.addEventListener("stop", () => listener.dispose());
       this.#characters.push(character);
+      this.#engine.world.bodies.add(character);
     }
 
-    for (const object of levelInfo.objects) this.#engine.world.add(object);
-
     this.#characters[0].addEventListener("collide", ({ detail: { body } }) => {
-      if (body === this.#characters[1])
-        this.dispatchEvent(new Event("completed"));
+      if (body === this.#characters[1]) {
+        this.stop();
+        level.complete();
+      }
     });
+
+    level.init(this.#engine.world);
+
+    this.#engine.start();
+  }
+
+  stop() {
+    this.#engine.stop();
   }
 }
