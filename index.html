@@ -6,19 +6,102 @@
     <title>Кошачьи пррррриключения</title>
     <style>
       body {
-        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100vw;
+        height: 100vh;
         margin: 0;
+        overflow: clip;
+        background-color: #823;
       }
 
       canvas {
         width: 100vw;
-        height: 100vh;
         image-rendering: pixelated;
+        background-color: #cef;
+      }
+
+      canvas.split ~ #separator {
+        --size: 9vw;
+        --width: 3vw;
+        background-color: inherit;
+
+        position: absolute;
+        top: 0;
+        right: calc(50% - var(--size) / 2);
+
+        width: calc(var(--width) + var(--size) / 2);
+        height: 100%;
+        --gradient: 100% var(--size) repeat-y
+          conic-gradient(
+            from 45deg at left,
+            #0000,
+            #000 1deg 89deg,
+            #0000 90deg
+          );
+        mask:
+          var(--width) 50% / var(--gradient) exclude,
+          0 50% / var(--gradient);
+      }
+
+      canvas:not(.split) ~ .pointer {
+        display: none;
+      }
+
+      .pointer {
+        --size: 7vw;
+
+        position: absolute;
+        top: calc((100% - var(--size)) / 2);
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        background-color: #fff;
+        border: 2px solid #ccc;
+        border-radius: 100%;
+        border-bottom-right-radius: 0;
+
+        width: var(--size);
+        height: var(--size);
+
+        transform: rotate(var(--angle))
+          translateX(
+            calc(
+              40vw / (2 * max(abs(sin(var(--angle))), abs(cos(var(--angle)))))
+            )
+          )
+          rotate(-45deg) scale(min(calc(256 / var(--character-distance)), 1.5));
+      }
+
+      .pointer img {
+        width: 70%;
+        image-rendering: pixelated;
+        rotate: 45deg;
+      }
+
+      #pointer-1 {
+        left: calc((50% - var(--size)) / 2);
+        --angle: calc(90deg - var(--character-angle));
+      }
+
+      #pointer-2 {
+        left: calc(50% + (50% - var(--size)) / 2);
+        --angle: calc(270deg - var(--character-angle));
       }
     </style>
   </head>
   <body>
-    <canvas></canvas>
+    <canvas width="512" height="256"></canvas>
+    <div id="separator"></div>
+    <div id="pointer-1" class="pointer">
+      <img src="res/tabby-cat-left.png" />
+    </div>
+    <div id="pointer-2" class="pointer">
+      <img src="res/ginger-cat-right.png" />
+    </div>
     <script src="src/index.js" type="module"></script>
   </body>
 </html>

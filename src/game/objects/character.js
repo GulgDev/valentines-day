@@ -1,16 +1,33 @@
-import { Sprite } from "./sprite.js";
+import {
+  gingerCatLeft,
+  gingerCatRight,
+  tabbyCatLeft,
+  tabbyCatRight,
+} from "../../../res/index.js";
+import { Body } from "./body.js";
 
 const SPEED = 192;
 const JUMP_POWER = 448;
 
 const DOUBLE_TAP_INTERVAL = 300;
 
-export class Character extends Sprite {
+const CHARACTER_WIDTH = 32,
+  CHARACTER_HEIGHT = 32;
+
+export const characterSprites = [
+  { left: gingerCatLeft, right: gingerCatRight },
+  { left: tabbyCatLeft, right: tabbyCatRight },
+];
+
+export class Character extends Body {
+  #variant;
+
   #moving = false;
   #canJump = false;
 
-  constructor(x, y, w, h, direction, img, imgX, imgY) {
-    super(x, y, w, h, img, imgX, imgY);
+  constructor(x, y, direction, variant) {
+    super(x, y, CHARACTER_WIDTH, CHARACTER_HEIGHT);
+    this.#variant = variant;
     this.direction = direction;
     this.addEventListener("collide", this.#onCollide);
   }
@@ -38,6 +55,18 @@ export class Character extends Sprite {
   update(world, dt) {
     if (this.#moving) this.vx = this.direction * SPEED;
     super.update(world, dt);
+  }
+
+  draw(renderer) {
+    renderer.image(
+      characterSprites[this.#variant][this.direction > 0 ? "right" : "left"],
+      this.x,
+      this.y,
+      this.w,
+      this.h,
+    );
+
+    super.draw(renderer);
   }
 
   #jump() {

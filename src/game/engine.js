@@ -6,6 +6,7 @@ export class Engine extends EventTarget {
   #ticker = new Ticker();
   world = new World();
 
+  #canvas;
   #renderer;
 
   #characters;
@@ -13,6 +14,7 @@ export class Engine extends EventTarget {
   constructor(ctx, characters) {
     super();
 
+    this.#canvas = ctx.canvas;
     this.#renderer = new Renderer(ctx);
 
     this.#characters = characters;
@@ -39,8 +41,28 @@ export class Engine extends EventTarget {
   #draw() {
     this.#renderer.prepare();
 
+    document.documentElement.style.setProperty(
+      "--character-angle",
+      `${Math.atan2(
+        this.#characters[1].x - this.#characters[0].x,
+        this.#characters[1].y - this.#characters[0].y,
+      )}rad`,
+    );
+    document.documentElement.style.setProperty(
+      "--character-distance",
+      `${Math.sqrt(
+        (this.#characters[1].x - this.#characters[0].x) ** 2,
+        (this.#characters[1].y - this.#characters[0].y) ** 2,
+      )}`,
+    );
+
     const hw = this.#renderer.width / 2;
-    if (Math.abs(this.#characters[0].x - this.#characters[1].x) < hw) {
+    if (
+      this.#characters[1].x - this.#characters[0].x <= hw &&
+      this.#characters[1].x > this.#characters[0].x
+    ) {
+      this.#canvas.classList.remove("split");
+
       this.#renderer.setCamera(
         0,
         0,
@@ -51,13 +73,15 @@ export class Engine extends EventTarget {
       );
       this.world.draw(this.#renderer);
     } else {
+      this.#canvas.classList.add("split");
+
       this.#renderer.setCamera(
         0,
         0,
         hw,
         this.#renderer.height,
-        this.#characters[0].x.x,
-        this.#characters[0].x.y,
+        this.#characters[0].x,
+        this.#characters[0].y,
       );
       this.world.draw(this.#renderer);
 

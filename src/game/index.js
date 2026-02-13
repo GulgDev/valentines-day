@@ -16,9 +16,8 @@ export class Game extends EventTarget {
       const character = new Character(
         level.characters[0].x,
         level.characters[0].y,
-        64,
-        64,
         level.characters[0].direction,
+        0,
       );
       const listener = new InputListener(canvas, 0, 0, 0.5, 1, "KeyZ");
       listener.addEventListener("press", () => character.press());
@@ -32,9 +31,8 @@ export class Game extends EventTarget {
       const character = new Character(
         level.characters[1].x,
         level.characters[1].y,
-        64,
-        64,
         level.characters[1].direction,
+        1,
       );
       const listener = new InputListener(canvas, 0.5, 0, 1, 1, "KeyX");
       listener.addEventListener("press", () => character.press());

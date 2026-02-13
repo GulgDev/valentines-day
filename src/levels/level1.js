@@ -1,4 +1,4 @@
-import { Body } from "../game/objects/body.js";
+import { Solid } from "../game/objects/solid.js";
 
 export const level1 = {
   characters: [
@@ -6,6 +6,8 @@ export const level1 = {
     { x: 128, y: 0, direction: -1 },
   ],
   init(world) {
-    world.bodies.add(Object.assign(new Body(0, 64, 512, 64), { static: true }));
+    world.bodies.add(
+      Object.assign(new Solid(0, 64, 512, 64, "#444"), { static: true }),
+    );
   },
 };

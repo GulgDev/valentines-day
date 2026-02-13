@@ -35,7 +35,7 @@ export class Body extends EventTarget {
 
   draw(renderer) {
     if (DEBUG_WIREFRAMES_ENABLED) {
-      renderer.rect(this.x, this.y, this.w, this.h, {
+      renderer.strokeRect(this.x, this.y, this.w, this.h, {
         lineWidth: 2,
         strokeStyle: "#f00",
       });
