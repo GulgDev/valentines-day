@@ -6,7 +6,8 @@ const JUMP_POWER = 448;
 const DOUBLE_TAP_INTERVAL = 300;
 
 export class Character extends Sprite {
-  #dx = 1;
+  direction = 1;
+
   #moving = false;
   #canJump = false;
 
@@ -36,7 +37,7 @@ export class Character extends Sprite {
   }
 
   update(world, dt) {
-    if (this.#moving) this.vx = this.#dx * SPEED;
+    if (this.#moving) this.vx = this.direction * SPEED;
     super.update(world, dt);
   }
 
@@ -50,11 +51,14 @@ export class Character extends Sprite {
   #onCollide = ({ detail: { direction } }) => {
     switch (direction) {
       case "left":
-        if (this.#moving && this.#dx < 0) this.#dx = -this.#dx;
+        if (this.#moving && this.direction < 0) this.direction *= -1;
+        break;
       case "right":
-        if (this.#moving && this.#dx > 0) this.#dx = -this.#dx;
+        if (this.#moving && this.direction > 0) this.direction *= -1;
+        break;
       case "bottom":
         this.#canJump = true;
+        break;
     }
   };
 }
