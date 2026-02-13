@@ -11,6 +11,8 @@ export class Engine extends EventTarget {
   #characters;
 
   constructor(ctx, characters) {
+    super();
+
     this.#renderer = new Renderer(ctx);
 
     this.#characters = characters;
