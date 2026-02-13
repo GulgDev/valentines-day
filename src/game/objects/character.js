@@ -6,13 +6,12 @@ const JUMP_POWER = 448;
 const DOUBLE_TAP_INTERVAL = 300;
 
 export class Character extends Sprite {
-  direction = 1;
-
   #moving = false;
   #canJump = false;
 
-  constructor(x, y, w, h, img, imgX, imgY) {
+  constructor(x, y, w, h, direction, img, imgX, imgY) {
     super(x, y, w, h, img, imgX, imgY);
+    this.direction = direction;
     this.addEventListener("collide", this.#onCollide);
   }
 
