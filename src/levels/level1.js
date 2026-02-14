@@ -1,4 +1,5 @@
-import { Solid } from "../game/objects/solid.js";
+import { whitePaw } from "../../res/index.js";
+import { Sprite9Slice } from "../game/objects/9-slice.js";
 import { fadeIn, fadeOut } from "../transition.js";
 
 export const level1 = {
@@ -8,7 +9,26 @@ export const level1 = {
   ],
   init(world) {
     world.bodies.add(
-      Object.assign(new Solid(0, 64, 512, 64, "#444"), { static: true }),
+      Object.assign(
+        new Sprite9Slice(
+          0,
+          64,
+          512,
+          64,
+          whitePaw,
+          whitePaw,
+          whitePaw,
+          whitePaw,
+          whitePaw,
+          whitePaw,
+          whitePaw,
+          whitePaw,
+          whitePaw,
+        ),
+        {
+          static: true,
+        },
+      ),
     );
   },
   async complete() {
