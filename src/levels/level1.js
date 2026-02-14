@@ -1,4 +1,5 @@
 import { Solid } from "../game/objects/solid.js";
+import { fadeIn, fadeOut } from "../transition.js";
 
 export const level1 = {
   characters: [
@@ -9,5 +10,9 @@ export const level1 = {
     world.bodies.add(
       Object.assign(new Solid(0, 64, 512, 64, "#444"), { static: true }),
     );
+  },
+  async complete() {
+    await fadeOut();
+    await fadeIn();
   },
 };

@@ -6,7 +6,9 @@
     <title>Кошачьи пррррриключения</title>
     <style>
       body {
-        display: flex;
+        display: grid;
+        grid-template-rows: 1fr;
+        grid-template-columns: 1fr;
         justify-content: center;
         align-items: center;
         width: 100vw;
@@ -16,13 +18,35 @@
         background-color: #823;
       }
 
-      canvas {
-        width: 100vw;
+      img {
         image-rendering: pixelated;
+      }
+
+      canvas,
+      #overlay {
+        grid-row: 1 / 1;
+        grid-column: 1 / 1;
+        aspect-ratio: 2 / 1;
+        width: 100vw;
+      }
+
+      #overlay {
+        display: grid;
+        grid-template-columns: repeat(10, 1fr);
+        grid-template-rows: repeat(5, 1fr);
+        align-items: center;
+        justify-items: center;
+      }
+
+      canvas {
+        image-rendering: pixelated;
+      }
+
+      #game {
         background-color: #cef;
       }
 
-      canvas.split ~ #separator {
+      #game.split ~ #separator {
         --size: 9vw;
         --width: 3vw;
         background-color: inherit;
@@ -45,7 +69,7 @@
           0 50% / var(--gradient);
       }
 
-      canvas:not(.split) ~ .pointer {
+      #game:not(.split) ~ .pointer {
         display: none;
       }
 
@@ -78,7 +102,6 @@
 
       .pointer img {
         width: 70%;
-        image-rendering: pixelated;
         rotate: 45deg;
       }
 
@@ -94,7 +117,8 @@
     </style>
   </head>
   <body>
-    <canvas width="512" height="256"></canvas>
+    <canvas id="game" width="512" height="256"></canvas>
+    <div id="overlay"></div>
     <div id="separator"></div>
     <div id="pointer-1" class="pointer">
       <img src="res/tabby-cat-left.png" />

@@ -3,7 +3,7 @@ export const gingerPaw = Object.assign(document.createElement("img"), {
 });
 
 export const whitePaw = Object.assign(document.createElement("img"), {
-  src: "res/ginger-paw.png",
+  src: "res/white-paw.png",
 });
 
 export const gingerCatLeft = Object.assign(document.createElement("img"), {
