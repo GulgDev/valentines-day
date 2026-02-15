@@ -15,7 +15,8 @@
         height: 100vh;
         margin: 0;
         overflow: clip;
-        background-color: #823;
+        background-color: hsl(200, 80%, 20%);
+        user-select: none;
       }
 
       img {
@@ -43,30 +44,20 @@
       }
 
       #game {
-        background-color: #cef;
+        background-image: radial-gradient(closest-side at bottom, #3bf, #7cf);
       }
 
       #game.split ~ #separator {
-        --size: 9vw;
-        --width: 3vw;
-        background-color: inherit;
+        --width: 1vw;
 
         position: absolute;
         top: 0;
-        right: calc(50% - var(--size) / 2);
+        left: calc(50% - (var(--width)) / 2);
 
-        width: calc(var(--width) + var(--size) / 2);
+        width: var(--width);
         height: 100%;
-        --gradient: 100% var(--size) repeat-y
-          conic-gradient(
-            from 45deg at left,
-            #0000,
-            #000 1deg 89deg,
-            #0000 90deg
-          );
-        mask:
-          var(--width) 50% / var(--gradient) exclude,
-          0 50% / var(--gradient);
+
+        background-color: inherit;
       }
 
       #game:not(.split) ~ .pointer {
@@ -97,7 +88,8 @@
               40vw / (2 * max(abs(sin(var(--angle))), abs(cos(var(--angle)))))
             )
           )
-          rotate(-45deg) scale(min(calc(256 / var(--character-distance)), 1.5));
+          scaleY(calc(var(--sign) * sign(var(--character-angle))))
+          rotate(-45deg) scale(min(calc(256 / var(--character-distance)), 1));
       }
 
       .pointer img {
@@ -108,11 +100,17 @@
       #pointer-1 {
         left: calc((50% - var(--size)) / 2);
         --angle: calc(90deg - var(--character-angle));
+        --sign: 1;
       }
 
       #pointer-2 {
         left: calc(50% + (50% - var(--size)) / 2);
         --angle: calc(270deg - var(--character-angle));
+        --sign: -1;
+      }
+
+      #pointer-2 img {
+        scale: -1 1;
       }
     </style>
   </head>
