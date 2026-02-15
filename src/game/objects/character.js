@@ -99,16 +99,10 @@ export class Character extends Body {
   #onCollide = ({ detail: { direction } }) => {
     switch (direction) {
       case "left":
-        if (this.#moving && this.direction < 0) {
-          this.direction *= -1;
-          this.#canJump = true;
-        }
+        if (this.#moving && this.direction < 0) this.direction *= -1;
         break;
       case "right":
-        if (this.#moving && this.direction > 0) {
-          this.direction *= -1;
-          this.#canJump = true;
-        }
+        if (this.#moving && this.direction > 0) this.direction *= -1;
         break;
       case "bottom":
         this.#canJump = true;
