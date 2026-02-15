@@ -11,8 +11,9 @@ const JUMP_POWER = 448;
 
 const DOUBLE_TAP_INTERVAL = 300;
 
-const CHARACTER_WIDTH = 32,
-  CHARACTER_HEIGHT = 32;
+export const CHARACTER_SIZE = 32;
+
+const ANGULAR_SPEED = (2 * SPEED) / CHARACTER_SIZE;
 
 export const characterSprites = [
   { left: gingerCatLeft, right: gingerCatRight },
@@ -26,7 +27,7 @@ export class Character extends Body {
   #canJump = false;
 
   constructor(x, y, direction, variant) {
-    super(x, y, CHARACTER_WIDTH, CHARACTER_HEIGHT);
+    super(x, y, CHARACTER_SIZE, CHARACTER_SIZE);
     this.#variant = variant;
     this.direction = direction;
     this.addEventListener("collide", this.#onCollide);
@@ -48,22 +49,32 @@ export class Character extends Body {
 
   release() {
     this.#moving = false;
+    this.#rotation = 0;
 
     this.#releasedAt = document.timeline.currentTime;
   }
 
+  #rotation = 0;
+
   update(world, dt) {
-    if (this.#moving) this.vx = this.direction * SPEED;
+    if (this.#moving) {
+      this.vx = this.direction * SPEED;
+      this.#rotation += this.direction * ANGULAR_SPEED * dt;
+    }
+
     super.update(world, dt);
   }
 
   draw(renderer) {
+    const round = Math.PI / 4;
     renderer.image(
       characterSprites[this.#variant][this.direction > 0 ? "right" : "left"],
       this.x,
       this.y,
       this.w,
       this.h,
+      false,
+      Math.round(this.#rotation / round) * round,
     );
 
     super.draw(renderer);
@@ -79,10 +90,16 @@ export class Character extends Body {
   #onCollide = ({ detail: { direction } }) => {
     switch (direction) {
       case "left":
-        if (this.#moving && this.direction < 0) this.direction *= -1;
+        if (this.#moving && this.direction < 0) {
+          this.direction *= -1;
+          this.#canJump = true;
+        }
         break;
       case "right":
-        if (this.#moving && this.direction > 0) this.direction *= -1;
+        if (this.#moving && this.direction > 0) {
+          this.direction *= -1;
+          this.#canJump = true;
+        }
         break;
       case "bottom":
         this.#canJump = true;
