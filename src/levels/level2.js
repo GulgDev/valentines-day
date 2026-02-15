@@ -2,9 +2,9 @@ import { SCREEN_HEIGHT, SCREEN_WIDTH } from "../const/screen.js";
 import { Laser } from "./objects/laser.js";
 import { Lever } from "./objects/lever.js";
 import { Wool } from "./objects/wool.js";
-import { Game } from "../game/index.js";
 import { CHARACTER_SIZE } from "../game/objects/character.js";
 import { BIG_SIZE } from "../const/size.js";
+import { end } from "./end.js";
 
 export const level2 = {
   characters: [
@@ -47,13 +47,7 @@ export const level2 = {
     );
   },
 
-  async complete() {
-    await fadeOut();
-
-    const game = new Game(canvas, level3);
-
-    await fadeIn();
-
-    game.start();
+  complete() {
+    end();
   },
 };

@@ -5,12 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Кошачьи пррррриключения</title>
     <style>
-      body {
+      body,
+      #valentine {
         display: grid;
         grid-template-rows: 1fr;
         grid-template-columns: 1fr;
         justify-content: center;
+        justify-items: center;
         align-items: center;
+      }
+
+      body {
         width: 100vw;
         height: 100vh;
         margin: 0;
@@ -24,7 +29,8 @@
       }
 
       canvas,
-      #overlay {
+      #overlay,
+      #valentine {
         grid-row: 1 / 1;
         grid-column: 1 / 1;
         aspect-ratio: 2 / 1;
@@ -32,6 +38,9 @@
       }
 
       #overlay {
+        position: absolute;
+        z-index: 10;
+
         display: grid;
         grid-template-columns: repeat(10, 1fr);
         grid-template-rows: repeat(5, 1fr);
@@ -112,10 +121,79 @@
       #pointer-2 img {
         scale: -1 1;
       }
+
+      /* Valentine card */
+      #valentine:not(.visible) {
+        display: none;
+      }
+
+      #valentine {
+        background-color: #3bf;
+      }
+
+      .heart,
+      #heart-text {
+        grid-row: 1 / 1;
+        grid-column: 1 / 1;
+      }
+
+      .heart {
+        height: 75vh; /* adjust to control the size */
+        aspect-ratio: 1;
+        --_m: radial-gradient(#000 69%, #0000 70%) 84.5%/50%;
+        -webkit-mask-box-image: var(--_m);
+        mask-border: var(--_m);
+        clip-path: polygon(-41% 0, 50% 91%, 141% 0);
+        background: #cc333f;
+        animation: heartbeat 1.5s infinite ease;
+      }
+
+      /* fallback until better support for mask-border */
+      @supports not (-webkit-mask-box-image: var(--_m)) {
+        .heart {
+          mask:
+            radial-gradient(at 70% 31%, #000 29%, #0000 30%),
+            radial-gradient(at 30% 31%, #000 29%, #0000 30%),
+            conic-gradient(#000 0 0) bottom/100% 50% no-repeat;
+        }
+      }
+
+      @keyframes heartbeat {
+        0% {
+          transform: scale(0.8);
+        }
+        10% {
+          transform: scale(1);
+        }
+        20% {
+          transform: scale(0.8);
+        }
+        30% {
+          transform: scale(1);
+        }
+        50%,
+        100% {
+          transform: scale(0.8);
+        }
+      }
+
+      #heart-text {
+        position: absolute;
+        transform: translateY(-5vh);
+        width: 40vh;
+      }
     </style>
+    <script
+      src="https://cdn.jsdelivr.net/npm/vara@1.4.0/lib/vara.min.js"
+      type="text/javascript"
+    ></script>
   </head>
   <body>
     <canvas id="game" width="512" height="256"></canvas>
+    <div id="valentine">
+      <div class="heart"></div>
+      <div id="heart-text"></div>
+    </div>
     <div id="overlay"></div>
     <div id="separator"></div>
     <div id="pointer-1" class="pointer">
