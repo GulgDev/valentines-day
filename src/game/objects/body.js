@@ -7,6 +7,7 @@ export class Body extends EventTarget {
   tags = new Set();
 
   static = false;
+  touchable = true;
   collidable = true;
 
   constructor(x, y, w, h) {
@@ -29,7 +30,8 @@ export class Body extends EventTarget {
       this.x += this.vx * dt;
       this.y += this.vy * dt;
 
-      if (this.collidable) world.bodies.forEach((body) => this.collide(body));
+      if (this.collidable || this.touchable)
+        world.bodies.forEach((body) => this.collide(body));
     }
   }
 
@@ -43,7 +45,7 @@ export class Body extends EventTarget {
   }
 
   collide(body) {
-    if (!body.collidable) return;
+    if (!body.touchable) return;
 
     const x1 = Math.max(this.x - this.w / 2, body.x - body.w / 2),
       x2 = Math.min(this.x + this.w / 2, body.x + body.w / 2),
@@ -57,7 +59,6 @@ export class Body extends EventTarget {
       body.dispatchEvent(new CustomEvent("touch", { detail: { body: this } }));
     else return;
 
-    // state might have changed
     if (!(this.collidable && body.collidable)) return;
 
     let direction;
