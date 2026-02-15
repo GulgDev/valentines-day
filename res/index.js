@@ -39,3 +39,11 @@ export const wool = Object.assign(document.createElement("img"), {
 export const laser = Object.assign(document.createElement("img"), {
   src: "res/laser.png",
 });
+
+export const leverOn = Object.assign(document.createElement("img"), {
+  src: "res/lever-on.png",
+});
+
+export const leverOff = Object.assign(document.createElement("img"), {
+  src: "res/lever-off.png",
+});
