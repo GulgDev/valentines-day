@@ -44,10 +44,34 @@ export const laserDeactivated = Object.assign(document.createElement("img"), {
   src: "res/laser-deactivated.png",
 });
 
-export const leverOn = Object.assign(document.createElement("img"), {
-  src: "res/lever-on.png",
+export const leverOnTop = Object.assign(document.createElement("img"), {
+  src: "res/lever-on-top.png",
 });
 
-export const leverOff = Object.assign(document.createElement("img"), {
-  src: "res/lever-off.png",
+export const leverOnRight = Object.assign(document.createElement("img"), {
+  src: "res/lever-on-right.png",
+});
+
+export const leverOnBottom = Object.assign(document.createElement("img"), {
+  src: "res/lever-on-bottom.png",
+});
+
+export const leverOnLeft = Object.assign(document.createElement("img"), {
+  src: "res/lever-on-left.png",
+});
+
+export const leverOffTop = Object.assign(document.createElement("img"), {
+  src: "res/lever-off-top.png",
+});
+
+export const leverOffRight = Object.assign(document.createElement("img"), {
+  src: "res/lever-off-right.png",
+});
+
+export const leverOffBottom = Object.assign(document.createElement("img"), {
+  src: "res/lever-off-bottom.png",
+});
+
+export const leverOffLeft = Object.assign(document.createElement("img"), {
+  src: "res/lever-off-left.png",
 });
