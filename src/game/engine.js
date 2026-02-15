@@ -1,6 +1,8 @@
 import { Ticker } from "./ticker.js";
 import { Renderer } from "./renderer.js";
 import { World } from "./world.js";
+import { SCREEN_HEIGHT } from "../const/screen.js";
+import { CHARACTER_SIZE } from "./objects/character.js";
 
 export class Engine extends EventTarget {
   #ticker = new Ticker();
@@ -62,7 +64,9 @@ export class Engine extends EventTarget {
     const hw = this.#renderer.width / 2;
     if (
       this.#characters[1].x - this.#characters[0].x <= hw &&
-      this.#characters[1].x > this.#characters[0].x
+      this.#characters[1].x > this.#characters[0].x &&
+      Math.abs(this.#characters[1].y - this.#characters[0].y) <=
+        SCREEN_HEIGHT - (CHARACTER_SIZE / 2) * 2 - 4 * 2
     ) {
       this.#canvas.classList.remove("split");
 
