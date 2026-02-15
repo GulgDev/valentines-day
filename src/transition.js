@@ -16,22 +16,23 @@ export async function fadeOut() {
       },
     ).finished,
     ...Array.from({ length: ROWS }).flatMap((_, i) =>
-      Array.from({ length: COLS }).map((_, j) => {
-        container
-          .appendChild(((i + j) % 2 === 0 ? gingerPaw : whitePaw).cloneNode())
-          .animate(
-            [
-              { width: 0, height: 0 },
-              { width: "100%", height: "100%" },
-            ],
-            {
-              duration: 32,
-              delay: 12 * (i * COLS + j),
-              fill: "both",
-              easing: "ease-in",
-            },
-          ).finished;
-      }),
+      Array.from({ length: COLS }).map(
+        (_, j) =>
+          container
+            .appendChild(((i + j) % 2 === 0 ? gingerPaw : whitePaw).cloneNode())
+            .animate(
+              [
+                { width: 0, height: 0 },
+                { width: "100%", height: "100%" },
+              ],
+              {
+                duration: 32,
+                delay: 12 * (i * COLS + j),
+                fill: "both",
+                easing: "ease-in",
+              },
+            ).finished,
+      ),
     ),
   ]);
 }
@@ -63,5 +64,5 @@ export async function fadeIn() {
     ),
   ]);
 
-  container.childNodes.forEach((child) => child.remove());
+  Array.from(container.childNodes).forEach((child) => child.remove());
 }
