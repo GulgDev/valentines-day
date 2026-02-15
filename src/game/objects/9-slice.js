@@ -4,7 +4,10 @@ import { crop } from "../../util/crop.js";
 export class Sprite9Slice extends Body {
   constructor(x, y, w, h, img, left, top, right, bottom) {
     super(x, y, w, h);
+    this.setImage(img, left, top, right, bottom);
+  }
 
+  setImage(img, left, top, right, bottom) {
     const resolve = () => {
       const x1 = left,
         y1 = top,

@@ -1,4 +1,4 @@
-import { laser } from "../../../res/index.js";
+import { laser, laserDeactivated } from "../../../res/index.js";
 import { Sprite9Slice } from "../../game/objects/9-slice.js";
 import { Character } from "../../game/objects/character.js";
 
@@ -22,5 +22,10 @@ export class Laser extends Sprite9Slice {
     this.addEventListener("touch", ({ detail: { body } }) => {
       if (body instanceof Character) body.kill();
     });
+  }
+
+  deactivate() {
+    this.setImage(laserDeactivated, 0, 4, 0, 4);
+    this.touchable = false;
   }
 }

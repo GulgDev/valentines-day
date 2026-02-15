@@ -40,6 +40,10 @@ export const laser = Object.assign(document.createElement("img"), {
   src: "res/laser.png",
 });
 
+export const laserDeactivated = Object.assign(document.createElement("img"), {
+  src: "res/laser-deactivated.png",
+});
+
 export const leverOn = Object.assign(document.createElement("img"), {
   src: "res/lever-on.png",
 });
