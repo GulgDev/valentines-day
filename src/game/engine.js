@@ -18,27 +18,30 @@ export class Engine extends EventTarget {
     this.#renderer = new Renderer(ctx);
 
     this.#characters = characters;
-
-    this.#ticker.addEventListener("update", ({ detail: dt }) =>
-      this.#update(dt),
-    );
-    this.#ticker.addEventListener("draw", () => this.#draw());
   }
 
   start() {
+    this.#ticker.addEventListener("update", this.#update);
+    this.#ticker.addEventListener("draw", this.#draw);
+
     this.#ticker.start();
   }
 
   stop() {
+    this.#ticker.removeEventListener("update", this.#update);
+    this.#ticker.removeEventListener("draw", this.#draw);
+
     this.#ticker.stop();
     this.dispatchEvent(new Event("stop"));
+
+    this.#canvas.classList.remove("split");
   }
 
-  #update(dt) {
+  #update = ({ detail: dt }) => {
     this.world.update(dt);
-  }
+  };
 
-  #draw() {
+  #draw = () => {
     this.#renderer.prepare();
 
     document.documentElement.style.setProperty(
@@ -95,5 +98,5 @@ export class Engine extends EventTarget {
       );
       this.world.draw(this.#renderer);
     }
-  }
+  };
 }
