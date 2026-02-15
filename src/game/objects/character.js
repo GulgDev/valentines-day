@@ -35,6 +35,7 @@ export class Character extends Body {
 
   kill() {
     this.collidable = false;
+    this.touchable = false;
     this.release();
     this.dispatchEvent(new Event("death"));
   }
