@@ -20,7 +20,6 @@ export function laser(x1, y1, x2, y2) {
     },
   );
   sprite.addEventListener("touch", ({ detail: { body } }) => {
-    console.log(body);
     if (body instanceof Character) body.kill();
   });
   return sprite;
