@@ -1,9 +1,7 @@
-import { canvas } from "../const/canvas.js";
 import { SCREEN_HEIGHT, SCREEN_WIDTH } from "../const/screen.js";
 import { wool } from "../factory/wool.js";
-import { Game } from "../game/index.js";
 import { CHARACTER_SIZE } from "../game/objects/character.js";
-import { fadeIn, fadeOut } from "../transition.js";
+import { level2 } from "./level2.js";
 
 export const level1 = {
   characters: [
@@ -29,11 +27,6 @@ export const level1 = {
         0,
         (SCREEN_WIDTH - CHARACTER_SIZE) / 2,
         SCREEN_HEIGHT,
-        wool,
-        4,
-        4,
-        4,
-        4,
       ),
     );
     world.bodies.add(
@@ -46,13 +39,7 @@ export const level1 = {
     );
   },
 
-  async complete() {
-    await fadeOut();
-
-    const game = new Game(canvas, level2);
-
-    await fadeIn();
-
-    game.start();
+  complete(game) {
+    game.transition(level2);
   },
 };

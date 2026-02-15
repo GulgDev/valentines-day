@@ -1,8 +1,11 @@
 import { Engine } from "./engine.js";
 import { Character } from "./objects/character.js";
 import { InputListener } from "./input.js";
+import { fadeIn, fadeOut } from "../transition.js";
 
 export class Game extends EventTarget {
+  #level;
+
   #container;
 
   #engine;
@@ -11,6 +14,8 @@ export class Game extends EventTarget {
 
   constructor(canvas, level) {
     super();
+
+    this.#level = level;
 
     this.#container = canvas;
 
@@ -23,6 +28,7 @@ export class Game extends EventTarget {
         level.characters[0].direction,
         0,
       );
+      character.addEventListener("death", () => this.#onDeath());
       this.#characters.push(character);
       this.#engine.world.bodies.add(character);
     }
@@ -34,6 +40,7 @@ export class Game extends EventTarget {
         level.characters[1].direction,
         1,
       );
+      character.addEventListener("death", () => this.#onDeath());
       this.#characters.push(character);
       this.#engine.world.bodies.add(character);
     }
@@ -41,7 +48,7 @@ export class Game extends EventTarget {
     this.#characters[0].addEventListener("touch", ({ detail: { body } }) => {
       if (body === this.#characters[1]) {
         this.stop();
-        level.complete();
+        level.complete(this);
       }
     });
 
@@ -70,5 +77,23 @@ export class Game extends EventTarget {
 
   stop() {
     this.#engine.stop();
+  }
+
+  #onDeath() {
+    setTimeout(() => this.restart(), 1000);
+  }
+
+  async restart() {
+    this.transition(this.#level);
+  }
+
+  async transition(level) {
+    this.#engine.stop();
+    await fadeOut();
+
+    const game = new Game(this.#container, level);
+
+    await fadeIn();
+    game.start();
   }
 }
