@@ -33,9 +33,16 @@ export class Character extends Body {
     this.addEventListener("collide", this.#onCollide);
   }
 
+  kill() {
+    this.collidable = false;
+    this.release();
+  }
+
   #releasedAt = null;
 
   press() {
+    if (!this.collidable) return;
+
     if (
       this.#releasedAt !== null &&
       document.timeline.currentTime - this.#releasedAt <= DOUBLE_TAP_INTERVAL

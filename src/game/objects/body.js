@@ -52,10 +52,13 @@ export class Body extends EventTarget {
 
     if (x2 <= x1 || y2 <= y1) return;
 
-    if (!body.static) {
-      this.dispatchEvent(new CustomEvent("touch", { detail: { body } }));
-      return;
-    }
+    this.dispatchEvent(new CustomEvent("touch", { detail: { body } }));
+    if (body.static)
+      body.dispatchEvent(new CustomEvent("touch", { detail: { body: this } }));
+    else return;
+
+    // state might have changed
+    if (!(this.collidable && body.collidable)) return;
 
     let direction;
     if (x2 - x1 < y2 - y1) {

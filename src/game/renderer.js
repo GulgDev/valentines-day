@@ -37,6 +37,8 @@ export class Renderer {
   image(img, x, y, w, h, repeat = false, angle = 0) {
     if (!img?.complete) return;
 
+    if (w === 0 || h === 0) return;
+
     if (repeat) {
       let pattern = this.#patterns.get(img);
       if (!pattern) {

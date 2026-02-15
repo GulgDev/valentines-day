@@ -35,3 +35,7 @@ export const debug = Object.assign(document.createElement("img"), {
 export const wool = Object.assign(document.createElement("img"), {
   src: "res/wool.png",
 });
+
+export const laser = Object.assign(document.createElement("img"), {
+  src: "res/laser.png",
+});
