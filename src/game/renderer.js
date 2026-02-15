@@ -34,21 +34,31 @@ export class Renderer {
   }
 
   #patterns = new WeakMap();
-  image(img, x, y, w, h, repeat = false) {
-    if (img == null || !img.complete) return;
+  image(img, x, y, w, h, repeat = false, angle = 0) {
+    if (!img?.complete) return;
 
     if (repeat) {
       let pattern = this.#patterns.get(img);
       if (!pattern) {
         this.#patterns.set(
           img,
-          (pattern = this.#ctx.createPattern(
-            img,
-            repeat === true ? "repeat" : "repeat-" + repeat,
-          )),
+          (pattern = this.#ctx.createPattern(img, "repeat")),
         );
       }
+      pattern.setTransform(new DOMMatrix().translate(x - w / 2, y - h / 2));
       this.fillRect(x, y, w, h, { fillStyle: pattern });
+    } else if (angle !== 0) {
+      this.#ctx.save();
+      this.#ctx.translate(Math.round(x), Math.round(y));
+      this.#ctx.rotate(angle);
+      this.#ctx.drawImage(
+        img,
+        Math.round(-w / 2),
+        Math.round(-h / 2),
+        Math.round(w),
+        Math.round(h),
+      );
+      this.#ctx.restore();
     } else {
       this.#ctx.drawImage(
         img,
