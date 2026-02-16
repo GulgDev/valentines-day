@@ -14,12 +14,15 @@ export class Cloud extends Sprite {
 
   #platformStanding = new Set();
 
-  constructor(x1, y1, x2, y2) {
+  #moving;
+
+  constructor(x1, y1, x2, y2, moving = true) {
     super(x1, y1, 32, 12, Math.random() < 0.5 ? cloud1 : cloud2);
     this.positions = [
       { x: x1, y: y1 },
       { x: x2, y: y2 },
     ];
+    this.#moving = moving;
 
     this.addEventListener("touch", ({ detail: { body } }) => {
       if (body instanceof Character) this.#platformStanding.add(body);
@@ -39,7 +42,7 @@ export class Cloud extends Sprite {
   }
 
   update(world, dt) {
-    if (!eq(this, this.positions[this.#targetPosition])) {
+    if (!eq(this, this.positions[this.#targetPosition]) && this.#moving) {
       const newPosition = moveTowards(
         this,
         this.positions[this.#targetPosition],
@@ -78,5 +81,9 @@ export class Cloud extends Sprite {
     }
 
     super.draw(renderer);
+  }
+
+  trigger() {
+    this.#moving = !this.moving;
   }
 }

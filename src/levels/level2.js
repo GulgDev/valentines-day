@@ -36,15 +36,11 @@ export const level2 = {
 
     const laser1 = new Laser(-24, CHARACTER_SIZE / 2 + 2, 0, -64 - 2);
     world.bodies.add(laser1);
-    world.bodies.add(
-      new Lever(-SCREEN_WIDTH / 2 + 10, 0, 3, () => laser1.deactivate()),
-    );
+    world.bodies.add(new Lever(-SCREEN_WIDTH / 2 + 10, 0, 3, [laser1]));
 
     const laser2 = new Laser(0, CHARACTER_SIZE / 2 + 2, 24, -64 - 2);
     world.bodies.add(laser2);
-    world.bodies.add(
-      new Lever(SCREEN_WIDTH / 2 - 10, 0, 1, () => laser2.deactivate()),
-    );
+    world.bodies.add(new Lever(SCREEN_WIDTH / 2 - 10, 0, 1, [laser2]));
   },
 
   complete(game) {

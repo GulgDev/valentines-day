@@ -6,26 +6,32 @@ export class Laser extends Sprite9Slice {
   static = true;
   collidable = false;
 
-  constructor(x1, y1, x2, y2) {
+  constructor(x1, y1, x2, y2, active = true) {
     super(
       (x1 + x2) / 2,
       (y1 + y2) / 2,
       Math.abs(x2 - x1),
       Math.abs(y2 - y1),
-      laser,
+      active ? laser : laserDeactivated,
       0,
       4,
       0,
       4,
     );
+    this.touchable = active;
 
     this.addEventListener("touch", ({ detail: { body } }) => {
       if (body instanceof Character) body.kill();
     });
   }
 
-  deactivate() {
-    this.setImage(laserDeactivated, 0, 4, 0, 4);
-    this.touchable = false;
+  trigger() {
+    if (this.touchable) {
+      this.setImage(laserDeactivated, 0, 4, 0, 4);
+      this.touchable = false;
+    } else {
+      this.setImage(laser, 0, 4, 0, 4);
+      this.touchable = true;
+    }
   }
 }

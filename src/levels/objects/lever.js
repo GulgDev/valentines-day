@@ -23,13 +23,13 @@ export class Lever extends Sprite {
   static = true;
   collidable = false;
 
-  constructor(x, y, rotation = 0, callback) {
+  constructor(x, y, rotation, targets) {
     super(x, y, 16, 16, leverOffVariants[rotation]);
-
     this.addEventListener("touch", ({ detail: { body } }) => {
       if (body instanceof Character) {
+        this.touchable = false;
         this.img = leverOnVariants[rotation];
-        callback(body);
+        targets.forEach((target) => target.trigger());
       }
     });
   }
