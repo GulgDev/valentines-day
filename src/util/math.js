@@ -17,6 +17,14 @@ export function place(x, y, anchorX, anchorY, w, h) {
   return [x - (anchorX - 0.5) * w, y - (anchorY - 0.5) * h, w, h];
 }
 
+export function stretchX(x1, x2, y, anchorY, h) {
+  return [(x1 + x2) / 2, y - (anchorY - 0.5) * h, Math.abs(x2 - x1), h];
+}
+
 export function stretchY(x, y1, y2, anchorX, w) {
   return [x - (anchorX - 0.5) * w, (y1 + y2) / 2, w, Math.abs(y2 - y1)];
+}
+
+export function stretch(x1, x2, y1, y2) {
+  return [(x1 + x2) / 2, (y1 + y2) / 2, Math.abs(x2 - x1), Math.abs(y2 - y1)];
 }

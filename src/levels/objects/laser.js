@@ -6,18 +6,8 @@ export class Laser extends Sprite9Slice {
   static = true;
   collidable = false;
 
-  constructor(x1, y1, x2, y2, active = true) {
-    super(
-      (x1 + x2) / 2,
-      (y1 + y2) / 2,
-      Math.abs(x2 - x1),
-      Math.abs(y2 - y1),
-      active ? laser : laserDeactivated,
-      0,
-      4,
-      0,
-      4,
-    );
+  constructor(x, y, w, h, active = true) {
+    super(x, y, w, h, active ? laser : laserDeactivated, 0, 4, 0, 4);
     this.touchable = active;
 
     this.addEventListener("touch", ({ detail: { body } }) => {
