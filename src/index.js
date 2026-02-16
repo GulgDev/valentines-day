@@ -1,8 +1,7 @@
 import { Game } from "./game/index.js";
-import { level1 } from "./levels/level1.js";
+import { level1 as level } from "./levels/index.js";
 
 const canvas = document.getElementById("game");
 
-import { level3 as level } from "./levels/level3.js";
-const game = new Game(canvas, level); // level1
+const game = new Game(canvas, level);
 game.start();
