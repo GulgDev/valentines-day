@@ -33,6 +33,14 @@ export class Renderer {
     this.#ctx.scale(mirror, 1);
   }
 
+  get globalCompositeOperation() {
+    return this.#ctx.globalCompositeOperation;
+  }
+
+  set globalCompositeOperation(value) {
+    this.#ctx.globalCompositeOperation = value;
+  }
+
   #patterns = new WeakMap();
   image(img, x, y, w, h, repeat = false, angle = 0) {
     if (!img?.complete) return;

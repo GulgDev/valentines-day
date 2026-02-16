@@ -49,6 +49,7 @@ export class Cloud extends Sprite {
     for (let i = 1; i < this.positions.length; ++i) {
       const { x: x1, y: y1 } = this.positions[i - 1],
         { x: x2, y: y2 } = this.positions[i];
+      renderer.globalCompositeOperation = "destination-over";
       renderer.dashedLine(x1, y1, x2, y2, 0, 8, {
         strokeStyle: "#fff8",
         lineDashOffset: -4,
@@ -56,6 +57,7 @@ export class Cloud extends Sprite {
         lineCap: "round",
         lineJoin: "round"
       });
+      renderer.globalCompositeOperation = "source-over";
     }
 
     super.draw(renderer);
