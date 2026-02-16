@@ -41,9 +41,14 @@ export class Character extends Body {
   }
 
   #releasedAt = null;
-
+  
   press() {
     if (!this.collidable) return;
+
+    if (this.static) {
+      this.static = false;
+      this.#jump();
+    }
 
     if (
       this.#releasedAt !== null &&
@@ -58,7 +63,6 @@ export class Character extends Body {
 
   release() {
     this.#moving = false;
-    this.#rotation = 0;
 
     this.#releasedAt = document.timeline.currentTime;
   }
@@ -66,9 +70,11 @@ export class Character extends Body {
   #rotation = 0;
 
   update(world, dt) {
-    if (this.#moving) {
+    if (this.#moving && !this.static) {
       this.vx = this.direction * SPEED;
       this.#rotation += this.direction * ANGULAR_SPEED * dt;
+    } else {
+      this.#rotation = 0;
     }
 
     super.update(world, dt);
@@ -96,13 +102,19 @@ export class Character extends Body {
     this.#canJump = false;
   }
 
-  #onCollide = ({ detail: { direction } }) => {
+  #onCollide = ({ detail: { body, direction } }) => {
     switch (direction) {
       case "left":
-        if (this.#moving && this.direction < 0) this.direction *= -1;
+        if (this.#moving && this.direction < 0) {
+          this.direction *= -1;
+          body.dispatchEvent(new CustomEvent("bumped", { detail: { body: this, direction } }));
+        }
         break;
       case "right":
-        if (this.#moving && this.direction > 0) this.direction *= -1;
+        if (this.#moving && this.direction > 0) {
+          this.direction *= -1;
+          body.dispatchEvent(new CustomEvent("bumped", { detail: { body: this, direction } }));
+        }
         break;
       case "bottom":
         this.#canJump = true;
