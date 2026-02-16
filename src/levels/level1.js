@@ -2,7 +2,8 @@ import { SCREEN_HEIGHT, SCREEN_WIDTH } from "../const/screen.js";
 import { Wool } from "./objects/wool.js";
 import { CHARACTER_SIZE } from "../game/objects/character.js";
 import { level2 } from "./level2.js";
-import { BIG_SIZE } from "../const/size.js";
+import { BIG_SIZE, X_EDGE } from "../const/size.js";
+import { place } from "../util/math.js";
 
 export const level1 = {
   characters: [
@@ -14,20 +15,22 @@ export const level1 = {
     // Floor
     world.bodies.add(
       new Wool(
-        0,
-        SCREEN_HEIGHT * 0.5 - (SCREEN_HEIGHT - CHARACTER_SIZE) / 4,
-        SCREEN_WIDTH,
-        (SCREEN_HEIGHT - CHARACTER_SIZE) / 2,
+        ...place(
+          0,
+          CHARACTER_SIZE / 2,
+          0.5,
+          0,
+          SCREEN_WIDTH,
+          SCREEN_HEIGHT / 2,
+        ),
       ),
     );
 
     // Walls
     world.bodies.add(
-      new Wool(SCREEN_WIDTH * -0.5 - BIG_SIZE / 2 + 4, 0, BIG_SIZE, BIG_SIZE),
+      new Wool(...place(-X_EDGE, 0, 1, 0.5, BIG_SIZE, BIG_SIZE)),
     );
-    world.bodies.add(
-      new Wool(SCREEN_WIDTH * 0.5 + BIG_SIZE / 2 - 4, 0, BIG_SIZE, BIG_SIZE),
-    );
+    world.bodies.add(new Wool(...place(X_EDGE, 0, 0, 0.5, BIG_SIZE, BIG_SIZE)));
   },
 
   complete(game) {
