@@ -91,4 +91,13 @@ export class Renderer {
       Math.round(h),
     );
   }
+
+  dashedLine(x1, y1, x2, y2, length, gap, opts = {}) {
+    Object.assign(this.#ctx, opts);
+    this.#ctx.beginPath();
+    this.#ctx.setLineDash([length, gap]);
+    this.#ctx.moveTo(x1, y1);
+    this.#ctx.lineTo(x2, y2);
+    this.#ctx.stroke();
+  }
 }
