@@ -66,7 +66,7 @@ export class Engine extends EventTarget {
       this.#characters[1].x - this.#characters[0].x <= hw &&
       this.#characters[1].x > this.#characters[0].x &&
       Math.abs(this.#characters[1].y - this.#characters[0].y) <=
-        SCREEN_HEIGHT - (CHARACTER_SIZE / 2) * 2 - 4 * 2
+        SCREEN_HEIGHT - (CHARACTER_SIZE / 2) * 2 - 32 * 2
     ) {
       this.#canvas.classList.remove("split");
 
