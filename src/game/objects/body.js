@@ -64,10 +64,15 @@ export class Body extends EventTarget {
 
     let direction;
     if (x2 - x1 < y2 - y1) {
-      if (body.x < this.x && this.vx < 0 && (body.platformDirection == null || body.platformDirection === "right"))
+      if (body.x < this.x && this.vx < 0 && (body.platformDirection == null || body.platformDirection === "right")) {
+        this.x = body.x + body.w / 2 + this.w / 2;
+          this.vx = 0;
         direction = "left";
-      else if (body.x >= this.x && this.vx > 0 && (body.platformDirection == null || body.platformDirection === "left"))
+      } else if (body.x >= this.x && this.vx > 0 && (body.platformDirection == null || body.platformDirection === "left")) {
+        this.x = body.x - body.w / 2 - this.w / 2;
+        this.vx = 0;
         direction = "right";
+      }
     } else {
       if (body.y < this.y && this.vy < 0 && (body.platformDirection == null || body.platformDirection === "bottom")) {
         this.y = body.y + body.h / 2 + this.h / 2;
@@ -85,25 +90,5 @@ export class Body extends EventTarget {
     this.dispatchEvent(
       new CustomEvent("collide", { detail: { body, direction } }),
     );
-  }
-
-  platformDirection = null;
-  #onCollide = ({ detail: { body, direction } }) => {
-    if (this.platformDirection == null || this.platformDirection === direction) {
-      switch (direction) {
-        case "left":
-          this.x = body.x + body.w / 2 + this.w / 2;
-          this.vx = 0;
-          break;
-        case "right":
-          this.x = body.x - body.w / 2 - this.w / 2;
-        this.vx = 0;
-        break;
-        case "top":
-          break;
-          case "bottom":
-            bre
-      }
-    }
   }
 }

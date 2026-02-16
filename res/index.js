@@ -36,6 +36,10 @@ export const wool = Object.assign(document.createElement("img"), {
   src: "res/wool.png",
 });
 
+export const slime = Object.assign(document.createElement("img"), {
+  src: "res/slime.png",
+});
+
 export const cloud1 = Object.assign(document.createElement("img"), {
   src: "res/cloud-1.png",
 });
