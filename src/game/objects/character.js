@@ -107,13 +107,17 @@ export class Character extends Body {
       case "left":
         if (this.#moving && this.direction < 0) {
           this.direction *= -1;
-          body.dispatchEvent(new CustomEvent("bumped", { detail: { body: this, direction } }));
+          body.dispatchEvent(
+            new CustomEvent("bumped", { detail: { body: this, direction } }),
+          );
         }
         break;
       case "right":
         if (this.#moving && this.direction > 0) {
           this.direction *= -1;
-          body.dispatchEvent(new CustomEvent("bumped", { detail: { body: this, direction } }));
+          body.dispatchEvent(
+            new CustomEvent("bumped", { detail: { body: this, direction } }),
+          );
         }
         break;
       case "bottom":
