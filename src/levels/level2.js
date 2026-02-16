@@ -4,7 +4,7 @@ import { Lever } from "./objects/lever.js";
 import { Wool } from "./objects/wool.js";
 import { CHARACTER_SIZE } from "../game/objects/character.js";
 import { BIG_SIZE } from "../const/size.js";
-import { end } from "./end.js";
+import { level3 } from "./level3.js";
 
 export const level2 = {
   characters: [
@@ -47,7 +47,7 @@ export const level2 = {
     );
   },
 
-  complete() {
-    end();
+  complete(game) {
+    game.transition(level3);
   },
 };
