@@ -7,6 +7,7 @@ const CLOUD_INTERVAL = 1500;
 
 export class Cloud extends Sprite {
   static = true;
+  platformDirection = "top";
 
   constructor(x1, y1, x2, y2) {
     super(x1, y1, 32, 16, Math.random() < 0.5 ? cloud1 : cloud2);

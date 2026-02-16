@@ -44,6 +44,7 @@ export class Body extends EventTarget {
     }
   }
 
+  platformDirection = null;
   collide(body) {
     if (!body.touchable) return;
 
@@ -63,21 +64,16 @@ export class Body extends EventTarget {
 
     let direction;
     if (x2 - x1 < y2 - y1) {
-      if (body.x < this.x && this.vx < 0) {
-        this.x = body.x + body.w / 2 + this.w / 2;
-        this.vx = 0;
+      if (body.x < this.x && this.vx < 0 && (body.platformDirection == null || body.platformDirection === "right"))
         direction = "left";
-      } else if (body.x >= this.x && this.vx > 0) {
-        this.x = body.x - body.w / 2 - this.w / 2;
-        this.vx = 0;
+      else if (body.x >= this.x && this.vx > 0 && (body.platformDirection == null || body.platformDirection === "left"))
         direction = "right";
-      }
     } else {
-      if (body.y < this.y && this.vy < 0) {
+      if (body.y < this.y && this.vy < 0 && (body.platformDirection == null || body.platformDirection === "bottom")) {
         this.y = body.y + body.h / 2 + this.h / 2;
         this.vy = 0;
         direction = "top";
-      } else if (body.y >= this.y && this.vy > 0) {
+      } else if (body.y >= this.y && this.vy > 0 && (body.platformDirection == null || body.platformDirection === "top")) {
         this.y = body.y - body.h / 2 - this.h / 2;
         this.vy = 0;
         direction = "bottom";
@@ -89,5 +85,25 @@ export class Body extends EventTarget {
     this.dispatchEvent(
       new CustomEvent("collide", { detail: { body, direction } }),
     );
+  }
+
+  platformDirection = null;
+  #onCollide = ({ detail: { body, direction } }) => {
+    if (this.platformDirection == null || this.platformDirection === direction) {
+      switch (direction) {
+        case "left":
+          this.x = body.x + body.w / 2 + this.w / 2;
+          this.vx = 0;
+          break;
+        case "right":
+          this.x = body.x - body.w / 2 - this.w / 2;
+        this.vx = 0;
+        break;
+        case "top":
+          break;
+          case "bottom":
+            bre
+      }
+    }
   }
 }
