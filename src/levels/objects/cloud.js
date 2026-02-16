@@ -1,4 +1,5 @@
 import { cloud1, cloud2 } from "../../../res/index.js";
+import { Character } from "../../game/objects/character.js";
 import { Sprite } from "../../game/objects/sprite.js";
 import { eq, moveTowards } from "../../util/math.js";
 
@@ -9,12 +10,21 @@ export class Cloud extends Sprite {
   static = true;
   platformDirection = "top";
 
+  imgOffsetY = -4;
+
+  #platformStanding = new Set();
+
   constructor(x1, y1, x2, y2) {
-    super(x1, y1, 32, 16, Math.random() < 0.5 ? cloud1 : cloud2);
+    super(x1, y1, 32, 12, Math.random() < 0.5 ? cloud1 : cloud2);
     this.positions = [
       { x: x1, y: y1 },
       { x: x2, y: y2 },
     ];
+
+    this.addEventListener("touch", ({ detail: { body } }) => {
+      if (body instanceof Character) this.#platformStanding.add(body);
+    });
+
     this.#advance();
   }
 
@@ -30,17 +40,24 @@ export class Cloud extends Sprite {
 
   update(world, dt) {
     if (!eq(this, this.positions[this.#targetPosition])) {
-      Object.assign(
+      const newPosition = moveTowards(
         this,
-        moveTowards(
-          this,
-          this.positions[this.#targetPosition],
-          CLOUD_SPEED * dt,
-        ),
+        this.positions[this.#targetPosition],
+        CLOUD_SPEED * dt,
       );
+
+      this.#platformStanding.forEach((body) => {
+        body.x += newPosition.x - this.x;
+        body.y += newPosition.y - this.y;
+      });
+
+      this.x = newPosition.x;
+      this.y = newPosition.y;
 
       if (eq(this, this.positions[this.#targetPosition])) this.#advance();
     }
+
+    this.#platformStanding.clear();
 
     super.update(world, dt);
   }
@@ -55,7 +72,7 @@ export class Cloud extends Sprite {
         lineDashOffset: -4,
         lineWidth: 4,
         lineCap: "round",
-        lineJoin: "round"
+        lineJoin: "round",
       });
       renderer.globalCompositeOperation = "source-over";
     }

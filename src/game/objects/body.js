@@ -4,8 +4,6 @@ const GRAVITY = 768;
 const FRICTION = 448;
 
 export class Body extends EventTarget {
-  tags = new Set();
-
   static = false;
   touchable = true;
   collidable = true;
@@ -21,6 +19,9 @@ export class Body extends EventTarget {
   vx = 0;
   vy = 0;
 
+  #lastX = this.x;
+  #lastY = this.y;
+
   update(world, dt) {
     if (!this.static) {
       this.vx -=
@@ -32,6 +33,9 @@ export class Body extends EventTarget {
 
       if (this.collidable || this.touchable)
         world.bodies.forEach((body) => this.collide(body));
+
+      this.#lastX = this.x;
+      this.#lastY = this.y;
     }
   }
 
@@ -62,23 +66,42 @@ export class Body extends EventTarget {
 
     if (!(this.collidable && body.collidable)) return;
 
+    const dx = this.x - this.#lastX,
+      dy = this.y - this.#lastY;
+
     let direction;
     if (x2 - x1 < y2 - y1) {
-      if (body.x < this.x && this.vx < 0 && (body.platformDirection == null || body.platformDirection === "right")) {
+      if (
+        body.x < this.x &&
+        dx < 0 &&
+        (body.platformDirection == null || body.platformDirection === "right")
+      ) {
         this.x = body.x + body.w / 2 + this.w / 2;
-          this.vx = 0;
+        this.vx = 0;
         direction = "left";
-      } else if (body.x >= this.x && this.vx > 0 && (body.platformDirection == null || body.platformDirection === "left")) {
+      } else if (
+        body.x >= this.x &&
+        dx > 0 &&
+        (body.platformDirection == null || body.platformDirection === "left")
+      ) {
         this.x = body.x - body.w / 2 - this.w / 2;
         this.vx = 0;
         direction = "right";
       }
     } else {
-      if (body.y < this.y && this.vy < 0 && (body.platformDirection == null || body.platformDirection === "bottom")) {
+      if (
+        body.y < this.y &&
+        dy < 0 &&
+        (body.platformDirection == null || body.platformDirection === "bottom")
+      ) {
         this.y = body.y + body.h / 2 + this.h / 2;
         this.vy = 0;
         direction = "top";
-      } else if (body.y >= this.y && this.vy > 0 && (body.platformDirection == null || body.platformDirection === "top")) {
+      } else if (
+        body.y >= this.y &&
+        dy > 0 &&
+        (body.platformDirection == null || body.platformDirection === "top")
+      ) {
         this.y = body.y - body.h / 2 - this.h / 2;
         this.vy = 0;
         direction = "bottom";
