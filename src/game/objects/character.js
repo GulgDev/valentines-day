@@ -7,7 +7,7 @@ import {
 import { Body } from "./body.js";
 
 const SPEED = 192;
-const JUMP_POWER = 448;
+const JUMP_POWER = 384;
 
 const DOUBLE_TAP_INTERVAL = 300;
 
