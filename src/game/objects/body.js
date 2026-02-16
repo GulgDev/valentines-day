@@ -10,8 +10,8 @@ export class Body extends EventTarget {
 
   constructor(x, y, w, h) {
     super();
-    this.x = x;
-    this.y = y;
+    this.#lastX = this.x = x;
+    this.#lastY = this.y = y;
     this.w = w;
     this.h = h;
   }
@@ -19,8 +19,8 @@ export class Body extends EventTarget {
   vx = 0;
   vy = 0;
 
-  #lastX = this.x;
-  #lastY = this.y;
+  #lastX;
+  #lastY;
 
   update(world, dt) {
     if (!this.static) {
@@ -73,7 +73,7 @@ export class Body extends EventTarget {
     if (x2 - x1 < y2 - y1) {
       if (
         body.x < this.x &&
-        dx < 0 &&
+        Math.min(dx, this.vx) < 0 &&
         (body.platformDirection == null || body.platformDirection === "right")
       ) {
         this.x = body.x + body.w / 2 + this.w / 2;
@@ -81,7 +81,7 @@ export class Body extends EventTarget {
         direction = "left";
       } else if (
         body.x >= this.x &&
-        dx > 0 &&
+        Math.max(dx, this.vx) > 0 &&
         (body.platformDirection == null || body.platformDirection === "left")
       ) {
         this.x = body.x - body.w / 2 - this.w / 2;
@@ -91,7 +91,7 @@ export class Body extends EventTarget {
     } else {
       if (
         body.y < this.y &&
-        dy < 0 &&
+        Math.min(dy, this.vy) < 0 &&
         (body.platformDirection == null || body.platformDirection === "bottom")
       ) {
         this.y = body.y + body.h / 2 + this.h / 2;
@@ -99,7 +99,7 @@ export class Body extends EventTarget {
         direction = "top";
       } else if (
         body.y >= this.y &&
-        dy > 0 &&
+        Math.max(dy, this.vy) > 0 &&
         (body.platformDirection == null || body.platformDirection === "top")
       ) {
         this.y = body.y - body.h / 2 - this.h / 2;
